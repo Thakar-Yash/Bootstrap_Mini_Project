@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Interval Calculator</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+    <style>
+        .container {
+            margin-top: 50px;
+            max-width: 400px;
+        }
+        .result-box {
+            background-color: #2b78e4;
+            color: white;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 5px;
+        }
+        .btn-calculate {
+            margin-top: 10px;
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3 class="text-center">Date Interval</h3>
+        <div class="form-group">
+            <label>From:</label>
+            <input type="text" id="startDate" class="form-control datepicker" placeholder="MM/DD/YYYY">
+        </div>
+        <div class="form-group">
+            <label>To:</label>
+            <input type="text" id="endDate" class="form-control datepicker" placeholder="MM/DD/YYYY">
+        </div>
+        <button id="calculate" class="btn btn-primary btn-block btn-calculate">Calculate</button>
+        
+        <div id="result" class="result-box" style="display: none;"></div>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            // Initialize datepicker with month & year selector
+            $('.datepicker').datepicker({
+                format: 'mm/dd/yyyy',    // Date format
+                autoclose: true,         // Close on selection
+                todayHighlight: true,    // Highlight today's date
+            });
+
+            // Calculate date interval
+            $("#calculate").click(function(){
+                let start = $("#startDate").val();
+                let end = $("#endDate").val();
+
+                if (start && end) {
+                    let startDate = new Date(start);
+                    let endDate = new Date(end);
+                    
+                    let timeDiff = Math.abs(endDate - startDate);
+                    let daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+                    let weeksDiff = Math.floor(daysDiff / 7);
+                    let monthsDiff = Math.floor(daysDiff / 30.44);
+                    let yearsDiff = Math.floor(monthsDiff / 12);
+
+                    $("#result").html(`
+                        <p>Date interval between <b>${start}</b> and <b>${end}</b></p>
+                        <p>In years: <b>${yearsDiff}</b></p>
+                        <p>In months: <b>${monthsDiff}</b></p>
+                        <p>In weeks: <b>${weeksDiff}</b></p>
+                        <p>In days: <b>${daysDiff}</b></p>
+                    `).show();
+                } else {
+                    alert("Please select both dates!");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
